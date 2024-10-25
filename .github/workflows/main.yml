@@ -1,0 +1,31 @@
+name : generate Notion Page
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.18.0' # 사용할 Node.js 버전
+
+      - name: Install dependencies
+        run: npm install axios fs puppeteer sharp dotenv
+
+      - name: Run script
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          TARGET_URL: ${{ secrets.TARGET_URL }}
+          CHANGED_FILES: ${{ github.event.head_commit.modified }}
+          GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: node docs/createNotionPage.js # 실행할 Node.js 스크립트 경로
