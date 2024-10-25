@@ -28,13 +28,14 @@ jobs:
         run: |
           # 현재 커밋의 SHA 가져오기
           CURRENT_COMMIT=$(git rev-parse HEAD)
-          
-          # 이전 커밋의 SHA 가져오기
           PREVIOUS_COMMIT=$(git rev-parse HEAD^)
-          
-          # 변경된 파일 목록 가져오기
+
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-          git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT >> $GITHUB_ENV
+          # 변경된 파일 목록을 UTF-8로 변환하여 저장
+          git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | \
+          while read -r file; do
+            printf "%s\n" "$file" | iconv -f UTF-8 -t UTF-8//IGNORE >> $GITHUB_ENV
+          done
           echo "EOF" >> $GITHUB_ENV
 
       - name: Run script
