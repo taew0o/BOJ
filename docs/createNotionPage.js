@@ -27,6 +27,7 @@ require('dotenv').config();
     for(key in difficultyDict){
         difficulty = difficulty.replace(key, difficultyDict[key]);
     }
+    console.log(difficulty);
 
     //Readme.md와 java 파일 가져오기
     let readmePath = '';
@@ -39,7 +40,8 @@ require('dotenv').config();
             javaPath = path.join(__dirname, file);
         }
     }
-
+    console.log(readmePath);
+    console.log(javaPath);
 
     //문제 이름, 문제 번호, 알고리즘 분류 , 이미지 가져오기
     let title = '';
