@@ -34,10 +34,11 @@ jobs:
           # 현재 커밋의 SHA 가져오기
           CURRENT_COMMIT=$(git rev-parse HEAD)
           PREVIOUS_COMMIT=$(git rev-parse HEAD^)
-
+          
           # 변경된 파일 목록을 가져오기
-          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT)
+          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | tr '\n' ' ') # 파일 목록을 공백으로 구분
 
+          # CHANGED_FILES 환경 변수에 저장
           echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
 
       - name: Run script
