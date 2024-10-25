@@ -23,6 +23,11 @@ jobs:
       - name: Install dependencies
         run: npm install axios fs puppeteer sharp dotenv
         
+      - name: Set Git encoding
+        run: |
+          git config --global i18n.commitencoding cp949
+          git config --global i18n.logoutputencoding cp949
+        
       - name: Get changed files and their content
         id: get_changed_files
         run: |
@@ -34,13 +39,6 @@ jobs:
           CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT)
 
           echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
-
-          # 각 파일의 내용을 가져오기
-          for file in $CHANGED_FILES; do
-            echo "CONTENT_OF_$file<<EOF" >> $GITHUB_ENV
-            git show $CURRENT_COMMIT:$file >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-          done
 
       - name: Run script
         env:
