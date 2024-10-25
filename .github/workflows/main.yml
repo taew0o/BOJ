@@ -24,12 +24,9 @@ jobs:
       - name: Get changed files
         id: get_changed_files
         run: |
-          # 이전 커밋의 SHA를 가져옵니다.
-          PREVIOUS_COMMIT=$(git rev-parse HEAD^)
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-  
+          # 현재 커밋의 변경된 파일 목록을 가져옵니다.
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-          git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT >> $GITHUB_ENV
+          git diff --name-only HEAD~1 HEAD >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Run script
