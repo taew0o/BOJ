@@ -31,11 +31,15 @@ jobs:
           PREVIOUS_COMMIT=$(git rev-parse HEAD^)
 
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-          # 변경된 파일 목록을 UTF-8로 변환하여 저장
+          # 변경된 파일 목록을 가져오기
           git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | \
           while IFS= read -r file; do
-            # iconv를 사용하여 파일 경로를 변환
-            echo -e "$file" | iconv -f UTF-8 -t UTF-8//IGNORE >> $GITHUB_ENV
+            echo "$file" >> $GITHUB_ENV
+            
+            # 파일 내용 가져오기
+            echo "CONTENT_OF_$file<<EOF" >> $GITHUB_ENV
+            git show $CURRENT_COMMIT:$file >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
           done
           echo "EOF" >> $GITHUB_ENV
 
