@@ -20,11 +20,18 @@ jobs:
 
       - name: Install dependencies
         run: npm install axios fs puppeteer sharp dotenv
+        
+      - name: Get changed files
+        id: get_changed_files
+        run: |
+          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
+          git diff --name-only HEAD^ HEAD >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Run script
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          CHANGED_FILES: ${{ github.event.head_commit.modified }}
+          CHANGED_FILES: ${{ env.CHANGED_FILES }}
           GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: node docs/createNotionPage.js # 실행할 Node.js 스크립트 경로
