@@ -34,10 +34,10 @@ require('dotenv').config();
     let javaPath = '';
     for(const file of changedFiles){
         if(file.endsWith('README.md')){
-            readmePath = path.join(__dirname, file);
+            readmePath = path.join(__dirname, Buffer.from(fileName, 'latin1').toString('utf8'));
         }
         else if(file.endsWith('.java')){
-            javaPath = path.join(__dirname, file);
+            javaPath = path.join(__dirname, Buffer.from(fileName, 'latin1').toString('utf8'));
         }
     }
     console.log(readmePath);
