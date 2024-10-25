@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2  # 두 개의 커밋을 가져옵니다.
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -24,9 +26,15 @@ jobs:
       - name: Get changed files
         id: get_changed_files
         run: |
-          # 현재 커밋의 변경된 파일 목록을 가져옵니다.
+          # 현재 커밋의 SHA 가져오기
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          
+          # 이전 커밋의 SHA 가져오기
+          PREVIOUS_COMMIT=$(git rev-parse HEAD^)
+          
+          # 변경된 파일 목록 가져오기
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-          git diff --name-only HEAD~1 HEAD >> $GITHUB_ENV
+          git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Run script
