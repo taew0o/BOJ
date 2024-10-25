@@ -33,8 +33,9 @@ jobs:
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
           # 변경된 파일 목록을 UTF-8로 변환하여 저장
           git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | \
-          while read -r file; do
-            printf "%s\n" "$file" | iconv -f UTF-8 -t UTF-8//IGNORE >> $GITHUB_ENV
+          while IFS= read -r file; do
+            # 파일 이름을 UTF-8로 변환
+            echo -e "$file" >> $GITHUB_ENV
           done
           echo "EOF" >> $GITHUB_ENV
 
