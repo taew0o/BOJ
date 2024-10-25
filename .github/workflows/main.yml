@@ -25,7 +25,6 @@ jobs:
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          TARGET_URL: ${{ secrets.TARGET_URL }}
           CHANGED_FILES: ${{ github.event.head_commit.modified }}
           GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: node docs/createNotionPage.js # 실행할 Node.js 스크립트 경로
