@@ -23,25 +23,24 @@ jobs:
       - name: Install dependencies
         run: npm install axios fs puppeteer sharp dotenv
         
-      - name: Get changed files
+      - name: Get changed files and their content
         id: get_changed_files
         run: |
           # 현재 커밋의 SHA 가져오기
           CURRENT_COMMIT=$(git rev-parse HEAD)
           PREVIOUS_COMMIT=$(git rev-parse HEAD^)
 
-          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
           # 변경된 파일 목록을 가져오기
-          git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | \
-          while IFS= read -r file; do
-            echo "$file" >> $GITHUB_ENV
-            
-            # 파일 내용 가져오기
+          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT)
+
+          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
+
+          # 각 파일의 내용을 가져오기
+          for file in $CHANGED_FILES; do
             echo "CONTENT_OF_$file<<EOF" >> $GITHUB_ENV
             git show $CURRENT_COMMIT:$file >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
           done
-          echo "EOF" >> $GITHUB_ENV
 
       - name: Run script
         env:
