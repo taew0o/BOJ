@@ -224,6 +224,17 @@ require('dotenv').config();
     }
 })();
 
+// GitHub Raw URL에서 파일 내용을 가져오는 함수
+async function fetchRawFileContent(url) {
+    try {
+        const response = await axios.get(url);
+        return response.data; // 파일 내용을 반환
+    } catch (error) {
+        console.error('Error fetching raw file content:', error);
+        return null;
+    }
+}
+
 async function createImageUrl(url, title) {
     const brower = await puppeteer.launch({headless: true});
     const page = await brower.newPage();
