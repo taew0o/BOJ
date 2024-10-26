@@ -24,68 +24,7 @@ require('dotenv').config();
     var difficulty = difficultyMatch ? difficultyMatch[1] : "알 수 없음";
     
     //영문 난이도를 한글 난이도로 변환
-    for(key in difficultyDict){
-        difficulty = difficulty.replace(key, difficultyDict[key]);
-    }
-    console.log(difficulty);
-
-    //Readme.md와 java 파일 가져오기
-    let readmePath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[0] + 'README.md');
-    let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[1]);
-    console.log(readmePath);
-    console.log(javaPath);
-    
-    // README.md 내용 가져오기
-    const readmeContent = await fetchRawFileContent(readmeUrl);
-    console.log('README Content:', readmeContent);
-
-    // Java 파일 내용 가져오기
-    const javaCode = await fetchRawFileContent(javaUrl);
-    console.log('Java Code:', javaContent);
-
-    //문제 이름, 문제 번호, 알고리즘 분류 , 이미지 가져오기
-    let title = '';
-    let problemNum = '', problemName = '';
-    let submissionDate = ''
-    let algorithmCategories = [];
-    let imageUrl = ''
-    let problemLink = ''
-    if(readmeContent){
-        // 첫 번째 줄에서 문제 번호와 문제 이름 추출
-        const firstLineMatch = readmeContent.match(/^# \[(.+?)\] (.+?) - (\d+)\s*$/m);
-        if (firstLineMatch) {
-            problemName = firstLineMatch[2];   // 문제 이름
-            problemNum = firstLineMatch[3]; // 문제 번호
-            title = problemNum + "-" + problemName
-        }
-        
-        //제출 일자 추출
-        const dateMatch = readmeContent.match(/### 제출 일자\s*\n(.+?)\s*$/m);
-        if(dateMatch){
-            const rawDate = dateMatch[1].trim(); // 제출 일자
-            const formattedDate = rawDate.replace(/(\d+)년 (\d+)월 (\d+)일/, '$1-$2-$3');
-            submissionDate = new Date(formattedDate).toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
-        }
-
-        //알고리즘 분류 리스트 추출
-        const classificationMatch = readmeContent.match(/### 분류\s*\n([\s\S]*?)###/);
-        if(classificationMatch){
-            const classifications = classificationMatch[1].trim().split(',').map(cat => cat.trim());
-            algorithmCategories = classifications.map(cat => ({name: cat}));
-        }
-
-        //문제 링크 url 추출 , 이미지 저장 및 링크 생성
-        const linkMatch = readmeContent.match(/\[문제 링크\]\((.+?)\)/);
-        if(linkMatch){
-            problemLink = linkMatch[1];
-            imageUrl = await createImageUrl(problemLink, title);
-            console.log(imageUrl);
-        }
-    }
-
-
-    //코드 가져오고 github page에 저장하기
-    let javaCode = '';
+    for(key in difficultyDict)기
     let codeArr = [];
     if(javaCode){
         let i = 0;
