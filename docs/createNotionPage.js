@@ -11,7 +11,6 @@ require('dotenv').config();
     const databaseId = process.env.DATABASE_ID;
     const targetUrl = process.env.TARGET_URL;
     const changedFiles = process.env.CHANGED_FILES.split('README.md'); // 변경된 파일 목록
-    console.log(changedFiles);
 
     var difficultyDict = {};
     difficultyDict['Bronze'] = '브론즈';
@@ -31,16 +30,8 @@ require('dotenv').config();
     console.log(difficulty);
 
     //Readme.md와 java 파일 가져오기
-    let readmePath = '';
-    let javaPath = '';
-    for(const file of changedFiles){
-        if(file.endsWith('README.md')){
-            readmePath = path.join(__dirname, Buffer.from(fileName, 'latin1').toString('utf8'));
-        }
-        else if(file.endsWith('.java')){
-            javaPath = path.join(__dirname, Buffer.from(fileName, 'latin1').toString('utf8'));
-        }
-    }
+    let readmePath = path.join(__dirname, changedFiles[0] + 'README.md');
+    let javaPath = path.join(__dirname, changedFiles[1]);
     console.log(readmePath);
     console.log(javaPath);
 
