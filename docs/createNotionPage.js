@@ -30,7 +30,7 @@ require('dotenv').config();
     console.log(difficulty);
     //Readme.md와 java 파일 가져오기
     let readmePath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[0] + 'README.md');
-    let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[1]);
+    let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[1].trim());
     console.log(readmePath);
     console.log(javaPath);
     
