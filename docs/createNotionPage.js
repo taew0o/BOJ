@@ -35,11 +35,11 @@ require('dotenv').config();
     console.log(javaPath);
     
     // README.md 내용 가져오기
-    const readmeContent = await fetchRawFileContent(readmeUrl);
+    const readmeContent = await fetchRawFileContent(readmePath);
     console.log('README Content:', readmeContent);
     
     // Java 파일 내용 가져오기
-    const javaCode = await fetchRawFileContent(javaUrl);
+    const javaCode = await fetchRawFileContent(javaPath);
     console.log('Java Code:', javaContent);
     
     //문제 이름, 문제 번호, 알고리즘 분류 , 이미지 가져오기
