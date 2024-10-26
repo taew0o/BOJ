@@ -27,20 +27,15 @@ require('dotenv').config();
     for(key in difficultyDict){
         difficulty = difficulty.replace(key, difficultyDict[key]);
     }
-    console.log(difficulty);
     //Readme.md와 java 파일 가져오기
     let readmePath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[0] + 'README.md');
     let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[1].trim());
-    console.log(readmePath);
-    console.log(javaPath);
     
     // README.md 내용 가져오기
     const readmeContent = await fetchRawFileContent(readmePath);
-    console.log('README Content:', readmeContent);
     
     // Java 파일 내용 가져오기
     const javaCode = await fetchRawFileContent(javaPath);
-    console.log('Java Code:', javaCode);
     
     //문제 이름, 문제 번호, 알고리즘 분류 , 이미지 가져오기
     let title = '';
@@ -236,13 +231,20 @@ async function fetchRawFileContent(url) {
 }
 
 async function createImageUrl(url, title) {
-    const brower = await puppeteer.launch({headless: true});
-    const page = await brower.newPage();
+    // 절대 경로 설정
+    const outputDir = path.join(process.cwd(), 'docs', title);
+    
+    // Puppeteer 브라우저 실행
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] // GitHub Actions에서 Puppeteer 실행 시 sandbox 모드 비활성화
+    });
+    const page = await browser.newPage();
 
-    //User-Agent 설정
+    // User-Agent 설정
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36');
 
-    //해상도 설정
+    // 해상도 설정
     await page.setViewport({
         width: 1200,
         height: 800,
@@ -251,16 +253,15 @@ async function createImageUrl(url, title) {
 
     await page.goto(url, { waitUntil: 'networkidle2' });
 
-    //스크린샷 저장할 폴더 생성 및 경로 설정
-    fs.mkdirSync(path.join(__dirname, 'docs', title), {recursive : true});
-    const fullImagePath = path.join(__dirname, 'docs' , title , `${title}_full.jpg`);
-    const imagePath = path.join(__dirname, 'docs', title , `${title}.jpg`);
+    // 스크린샷 저장할 폴더 생성 및 경로 설정
+    fs.mkdirSync(outputDir, { recursive: true });
+    const fullImagePath = path.join(outputDir, `${title}_full.jpg`);
+    const imagePath = path.join(outputDir, `${title}.jpg`);
 
     // 전체 페이지 캡쳐
     await page.screenshot({ path: fullImagePath, fullPage: true });
 
     // 이미지 자르기 (위쪽 50px, 아래쪽 50px 제거)
-    const outputPath = 'cropped.jpg';
     const cropTop = 420; // 위쪽 잘라낼 픽셀
     const cropBottom = 2400; // 아래쪽 잘라낼 픽셀
 
@@ -269,12 +270,16 @@ async function createImageUrl(url, title) {
     
     // 자르기
     await sharp(fullImagePath)
-        .extract({ left: 0, top: cropTop, width: metadata.width, height: metadata.height - cropTop - cropBottom })
+        .extract({
+            left: 0,
+            top: cropTop,
+            width: metadata.width,
+            height: metadata.height - cropTop - cropBottom
+        })
         .toFile(imagePath);
 
-    await brower.close();
-    
+    await browser.close();
 
-    //Github Pages URL 생성 빛 반환
-    return `https://raw.githubusercontent.com/taew0o/BOJ/main/docs/${title}/${title}.jpg`
+    // GitHub Pages URL 생성 및 반환
+    return `https://raw.githubusercontent.com/taew0o/BOJ/main/docs/${title}/${title}.jpg`;
 }
