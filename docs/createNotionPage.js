@@ -10,7 +10,8 @@ require('dotenv').config();
     const notionApiKey = process.env.NOTION_API_KEY;
     const databaseId = process.env.DATABASE_ID;
     const targetUrl = process.env.TARGET_URL;
-    const changedFiles = process.env.CHANGED_FILES.split('\n'); // 변경된 파일 목록
+    const changedFiles = process.env.CHANGED_FILES.split('README.md'); // 변경된 파일 목록
+    console.log(changedFiles);
 
     var difficultyDict = {};
     difficultyDict['Bronze'] = '브론즈';
