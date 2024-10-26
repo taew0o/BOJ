@@ -30,10 +30,18 @@ require('dotenv').config();
     console.log(difficulty);
 
     //Readme.md와 java 파일 가져오기
-    let readmePath = path.join(__dirname, changedFiles[0] + 'README.md');
-    let javaPath = path.join(__dirname, changedFiles[1]);
+    let readmePath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[0] + 'README.md');
+    let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[1]);
     console.log(readmePath);
     console.log(javaPath);
+    
+    // README.md 내용 가져오기
+    const readmeContent = await fetchRawFileContent(readmeUrl);
+    console.log('README Content:', readmeContent);
+
+    // Java 파일 내용 가져오기
+    const javaCode = await fetchRawFileContent(javaUrl);
+    console.log('Java Code:', javaContent);
 
     //문제 이름, 문제 번호, 알고리즘 분류 , 이미지 가져오기
     let title = '';
@@ -42,9 +50,7 @@ require('dotenv').config();
     let algorithmCategories = [];
     let imageUrl = ''
     let problemLink = ''
-    if(fs.existsSync(readmePath)){
-        const readmeContent = fs.readFileSync(readmePath, 'utf-8');
-
+    if(readmeContent){
         // 첫 번째 줄에서 문제 번호와 문제 이름 추출
         const firstLineMatch = readmeContent.match(/^# \[(.+?)\] (.+?) - (\d+)\s*$/m);
         if (firstLineMatch) {
@@ -81,8 +87,7 @@ require('dotenv').config();
     //코드 가져오고 github page에 저장하기
     let javaCode = '';
     let codeArr = [];
-    if(fs.existsSync(javaPath)){
-        javaCode = fs.readFileSync(javaPath, 'utf-8');
+    if(javaCode){
         let i = 0;
         while(i < javaCode.length){
             if(i + 2000 < javaCode.length){
