@@ -24,7 +24,7 @@ require('dotenv').config();
         }
     })
     console.log(readmeDir);
-    consolg.log(javaDir);
+    console.log(javaDir);
 
     var difficultyDict = {};
     difficultyDict['Bronze'] = '브론즈';
