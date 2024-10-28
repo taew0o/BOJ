@@ -300,7 +300,9 @@ async function createImageUrl(url, title) {
     await execShellCommand('git config --global user.name "taew0o"');
     await execShellCommand('git add docs'); // docs 폴더에 대한 변경 사항 추가
     await execShellCommand('git commit -m "Add screenshot for ${title}"');
-    await execShellCommand('git push https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/taew0o/BOJ.git HEAD:main');
+    // GITHUB_TOKEN을 사용해 푸시
+    const token = process.env.GITHUB_TOKEN; // Node.js에서 환경 변수를 가져옴
+    await execShellCommand(`git push https://x-access-token:${token}@github.com/taew0o/BOJ.git HEAD:main`); // GITHUB_TOKEN을 사용하여 푸시
 
     // GitHub Pages URL 생성 및 반환
     return `https://raw.githubusercontent.com/taew0o/BOJ/main/docs/${title}/${title}.jpg`;
