@@ -295,7 +295,7 @@ async function createImageUrl(url, title) {
     await browser.close();
     
     // GitHub에 푸시하기
-    await execShellCommand('git config --global user.email "you@example.com"');
+    await execShellCommand('git config --global user.email "taewoo9240@gmail.com"');
     await execShellCommand('git config --global user.name "taew0o"');
     await execShellCommand('git add docs'); // docs 폴더에 대한 변경 사항 추가
     await execShellCommand('git commit -m "Add screenshot for ${title}"');
