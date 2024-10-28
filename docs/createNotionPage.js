@@ -232,6 +232,7 @@ async function fetchRawFileContent(url) {
 
 async function createImageUrl(url, title) {
     // 절대 경로 설정
+    console.log(process.cwd());
     const outputDir = path.join(process.cwd(), 'docs', title);
     
     // Puppeteer 브라우저 실행
