@@ -10,14 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setfont
-        run: |
-          sudo apt-get install fonts-nanum*
-          
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           fetch-depth: 2  # 두 개의 커밋을 가져옵니다.
+          token: ${{ secrets.GITHUB_TOKEN }}  # GITHUB_TOKEN을 명시적으로 사용
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
