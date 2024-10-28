@@ -14,7 +14,7 @@ require('dotenv').config();
     const changedFiles = process.env.CHANGED_FILES.split('백준'); // 변경된 파일 목록
     let readmeDir = ''
     let javaDir = ''
-    arr.forEach((e) => {
+    changedFiles.forEach((e) => {
         console.log(e);
         if(e.includes('README.md')){
             readmeDir = '백준' + e.trim();
