@@ -230,6 +230,19 @@ async function fetchRawFileContent(url) {
     }
 }
 
+// 비동기 셸 명령 실행 함수
+function execShellCommand(cmd) {
+    return new Promise((resolve, reject) => {
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return reject(error);
+            }
+            resolve(stdout ? stdout : stderr);
+        });
+    });
+}
+
 async function createImageUrl(url, title) {
     // 절대 경로 설정
     console.log(process.cwd());
@@ -280,6 +293,13 @@ async function createImageUrl(url, title) {
         .toFile(imagePath);
 
     await browser.close();
+    
+    // GitHub에 푸시하기
+    await execShellCommand('git config --global user.email "you@example.com"');
+    await execShellCommand('git config --global user.name "taew0o"');
+    await execShellCommand('git add docs'); // docs 폴더에 대한 변경 사항 추가
+    await execShellCommand('git commit -m "Add screenshot for ${title}"');
+    await execShellCommand('git push');
 
     // GitHub Pages URL 생성 및 반환
     return `https://raw.githubusercontent.com/taew0o/BOJ/main/docs/${title}/${title}.jpg`;
