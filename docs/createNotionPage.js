@@ -4,6 +4,7 @@ const { type } = require('os');
 const path = require('path');
 const puppeteer = require('puppeteer');
 const sharp = require('sharp');
+const { exec } = require('child_process');
 require('dotenv').config();
 
 (async () => {
