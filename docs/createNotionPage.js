@@ -11,7 +11,20 @@ require('dotenv').config();
     const notionApiKey = process.env.NOTION_API_KEY;
     const databaseId = process.env.DATABASE_ID;
     const targetUrl = process.env.TARGET_URL;
-    const changedFiles = process.env.CHANGED_FILES.split('README.md'); // 변경된 파일 목록
+    const changedFiles = process.env.CHANGED_FILES.split('백준'); // 변경된 파일 목록
+    let readmeDir = ''
+    let javaDir = ''
+    arr.forEach((e) => {
+        console.log(e);
+        if(e.includes('README.md')){
+            readmeDir = '백준' + e.trim();
+        }
+        else if(e.includes('java')){
+            javaDir = '백준' + e.trim();
+        }
+    })
+    console.log(readmeDir);
+    consolg.log(javaDir);
 
     var difficultyDict = {};
     difficultyDict['Bronze'] = '브론즈';
@@ -29,8 +42,8 @@ require('dotenv').config();
         difficulty = difficulty.replace(key, difficultyDict[key]);
     }
     //Readme.md와 java 파일 가져오기
-    let readmePath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[0] + 'README.md');
-    let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', changedFiles[1].trim());
+    let readmePath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', readmeDir);
+    let javaPath = path.join('https://raw.githubusercontent.com/taew0o/BOJ/main', javaDir);
     
     // README.md 내용 가져오기
     const readmeContent = await fetchRawFileContent(readmePath);
