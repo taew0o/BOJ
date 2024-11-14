@@ -291,7 +291,7 @@ async function createImageUrl(url, title) {
 
     // 이미지 자르기 (위쪽 50px, 아래쪽 50px 제거)
     const cropTop = 420; // 위쪽 잘라낼 픽셀
-    const cropBottom = 2400; // 아래쪽 잘라낼 픽셀
+    const cropBottom = 1700; // 아래쪽 잘라낼 픽셀
 
     // 이미지 크기 가져오기
     const metadata = await sharp(fullImagePath).metadata();
