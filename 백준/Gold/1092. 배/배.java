@@ -41,21 +41,35 @@ public class Main {
         }
         
 
+        int time = 0;
+
+        //현재 각 크레인의 위치
+        int[] crainPos = new int[N];
+        Arrays.fill(crainPos, -1);
+
+        //각 box가 선택 되었는지
+        boolean[] isBoxDeleted = new boolean[M];
         int count = 0;
-        while (!box.isEmpty()){
-            //각 크레인이 해당 시점에 자신이 들 수 있는 가장 무거운 박스를 선택
+
+        while (count < M){
+            boolean isDeleted = false; //하나라도 선택 되었는지의 여부
             for(int i = 0 ; i < N ; i++){
-                int len = box.size();
-                if(len == 0) break;
-                for(int j = 0 ; j < len ; j++){
-                    if(crain[i] >= box.get(j)){
-                        box.remove(j);
+                while (crainPos[i] < M - 1){
+                    crainPos[i]++;
+                    if(!isBoxDeleted[crainPos[i]] && crain[i] >= box.get(crainPos[i])){
+                        isBoxDeleted[crainPos[i]] = true;
+                        count++;
+                        isDeleted = true;
                         break;
                     }
                 }
             }
-            count++;
+            if(isDeleted) {
+                time++;
+            } else{
+                break;
+            }
         }
-        System.out.println(count);
+        System.out.println(time);
     }
 }
