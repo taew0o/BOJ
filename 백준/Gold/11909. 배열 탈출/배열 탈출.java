@@ -1,52 +1,42 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int[][] arr, dp;
-    static class Node{
-        int r, c, cost;
-        public Node(int r, int c, int cost){
-            this.r = r;
-            this.c = c;
-            this.cost = cost;
-        }
-    }
     public static void main(String args[]) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(br.readLine());
 
-        arr = new int[N][N];
-        dp = new int[N][N];
+        int[][] arr = new int[N][N];
         for(int i = 0 ; i < N ; i++){
-            Arrays.fill(dp[i], Integer.MAX_VALUE);
             StringTokenizer st = new StringTokenizer(br.readLine());
             for(int j = 0 ; j < N ; j++){
                 arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        Queue<Node> queue = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
-        queue.offer(new Node(0,0, 0));
-        while (!queue.isEmpty()){
-            Node now = queue.poll();
-            if(dp[now.r][now.c] <= now.cost) continue;
-            dp[now.r][now.c] = now.cost;
-            if(now.r < N - 1){
-                int cost = Math.max(arr[now.r + 1][now.c] - arr[now.r][now.c] + 1, 0);
-                queue.offer(new Node(now.r + 1, now.c, dp[now.r][now.c] + cost));
-            }
-            if(now.c < N - 1){
-                int cost = Math.max(arr[now.r][now.c + 1] - arr[now.r][now.c] + 1, 0);
-                queue.offer(new Node(now.r, now.c + 1, dp[now.r][now.c] + cost));
+        int[][] dp = new int[N][N];
+        dp[0][0] = 0;
+        //0행
+        for(int i = 1 ; i < N ; i++){
+            dp[0][i] = dp[0][i - 1] + Math.max(0, arr[0][i] - arr[0][i - 1] + 1);
+        }
+
+        //0열
+        for(int i = 1 ; i < N ; i++){
+            dp[i][0] = dp[i - 1][0] + Math.max(0, arr[i][0] - arr[i - 1][0] + 1);
+        }
+
+        for(int i = 1 ; i < N ; i++){
+            for(int j = 1 ; j < N ; j++){
+                //위에서 오는 경우와 왼쪽에서 오는 경우 중 더 작은 값을 선택
+                dp[i][j] = Math.min(dp[i - 1][j] + Math.max(arr[i][j] - arr[i - 1][j] + 1, 0),
+                        dp[i][j - 1] + Math.max(arr[i][j] - arr[i][j - 1] + 1, 0));
             }
         }
+
         System.out.println(dp[N - 1][N - 1]);
     }
 }
