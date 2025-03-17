@@ -6,14 +6,10 @@ public class Main {
     static int[] arr;
     public static int solution(){
         int[] dp = new int[M + 1];
+        dp[0] = 1;
         for(int coin : arr){
-            for(int cost = 1 ; cost <= M ; cost++){
-                if(cost - coin == 0){
-                    dp[cost]++;
-                }
-                else if(cost - coin > 0){
-                    dp[cost] += dp[cost - coin];
-                }
+            for(int cost = coin ; cost <= M ; cost++){
+                dp[cost] += dp[cost - coin];
             }
         }
         return dp[M];
