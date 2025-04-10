@@ -1,6 +1,7 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,22 +13,19 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int K = Integer.parseInt(st.nextToken()), L = Integer.parseInt(st.nextToken());
 
-        HashMap<String, Integer> info = new HashMap<>();
-        String[] list = new String[L];
+        Set<String> set = new LinkedHashSet<>();
         for(int i = 0 ; i < L ; i++){
-            list[i] = br.readLine();
-            info.put(list[i], info.getOrDefault(list[i], 0) + 1);
+            String student = br.readLine();
+            //이미 존재했다면
+            if(!set.add(student)){
+                set.remove(student);
+                set.add(student);
+            }
         }
 
-        int count = 0;//수강신청 성공한 학생의 수
-        for(int i = 0 ; i < L ; i++){
-            info.put(list[i], info.get(list[i]) - 1);
-            if(info.get(list[i]) == 0){
-                count++;
-                sb.append(list[i]).append('\n');
-                info.remove(list[i]);
-            }
-            if(count == K) break;
+        Iterator<String> iterator = set.iterator();
+        for(int i = 0 ; i < Math.min(K, set.size()); i++){
+            sb.append(iterator.next()).append('\n');
         }
 
         bw.write(sb.toString());
