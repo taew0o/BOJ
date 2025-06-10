@@ -10,7 +10,6 @@ class Solution {
         for(int i = 1 ; i < diffs.length ; i++){
             sum += calTime(diffs[i], level, times[i], times[i - 1]);
         }
-        System.out.println(String.format("level : %d -> result : %d", level, sum));
         return sum;
     }
     public static int binarySearch(int[] diffs, int[] times, long limit, int left, int right){
