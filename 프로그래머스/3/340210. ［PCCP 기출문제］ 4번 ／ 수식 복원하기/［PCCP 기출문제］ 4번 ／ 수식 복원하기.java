@@ -1,6 +1,6 @@
 import java.util.Arrays;
+
 class Solution {
-    //N진법 -> 10진법
     public static int toDemical(String num, int system){
         int result = 0;
         int demical = 1;
