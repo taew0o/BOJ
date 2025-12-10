@@ -1,26 +1,25 @@
-name : generate Notion Page
+name: generate Notion Page
 
 on:
   push:
     branches:
       - main
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 2  # 두 개의 커밋을 가져옵니다.
-          token: ${{ secrets.GITHUB_TOKEN }}  # GITHUB_TOKEN을 명시적으로 사용
-
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20.18.0' # 사용할 Node.js 버전
-
+          node-version: '20.18.0'
+          
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -39,30 +38,25 @@ jobs:
             libxshmfence1
             
           npm install axios fs puppeteer sharp dotenv
-        
+          
       - name: Set Git encoding
         run: |
           git config --global i18n.commitencoding utf-8
           git config --global i18n.logoutputencoding utf-8
           git config --global core.quotepath false
-        
+          
       - name: Get changed files and their content
         id: get_changed_files
         run: |
-          # 현재 커밋의 SHA 가져오기
           CURRENT_COMMIT=$(git rev-parse HEAD)
           PREVIOUS_COMMIT=$(git rev-parse HEAD^)
-          
-          # 변경된 파일 목록을 가져오기
-          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | tr '\n' ' ') # 파일 목록을 공백으로 구분
-
-          # CHANGED_FILES 환경 변수에 저장
+          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT | tr '\n' ' ')
           echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
-
+          
       - name: Run script
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
           CHANGED_FILES: ${{ env.CHANGED_FILES }}
           GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-        run: node docs/createNotionPage.js # 실행할 Node.js 스크립트 경로
+        run: node docs/createNotionPage.js
