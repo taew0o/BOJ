@@ -6,8 +6,8 @@ public class Main {
     public static void main(String args[]) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        long[][][] dp = new long[N + 1][10][1024];
-        long MOD = 1_000_000_000L;
+        int[][][] dp = new int[N + 1][10][1024];
+        int MOD = 1_000_000_000;
         for(int i = 1 ; i <= 9 ; i++){
             dp[1][i][1 << i] = 1;
         }
@@ -28,7 +28,7 @@ public class Main {
                 }
             }
         }
-        long result = 0;
+        int result = 0;
         for(int i = 0 ; i <= 9 ; i++){
             result = (result + dp[N][i][1023]) % MOD;
         }
