@@ -6,17 +6,15 @@ public class Main {
     static int N,M,K;
     static int[] cards, cardsIndex;
     static int[] oppOrder;
-    static int[] nearlestMaxIndex, parent;
+    static int[] parent;
     static int find(int x){
         return x == parent[x] ? x : (parent[x] = find(parent[x]));
     }
     static void union(int a, int b){
         int pa = find(a);
         int pb = find(b);
-        if(pa < pb){
+        if(pa != pb){
             parent[pa] = pb;
-        } else if(pb < pa){
-            parent[pb] = pa;
         }
     }
     //UPPER BOUND
@@ -62,14 +60,9 @@ public class Main {
             oppOrder[i] = Integer.parseInt(st.nextToken());
         }
 
-        nearlestMaxIndex = new int[N + 1];
-        for(int i = 1 ; i <= N ; i++){
-            nearlestMaxIndex[i] = binarySearch(i);
-        }
-
         StringBuilder sb = new StringBuilder();
         for(int opp : oppOrder){
-            int next = find(nearlestMaxIndex[opp]);
+            int next = find(binarySearch(opp));
             sb.append(cards[next]).append('\n');
             union(next, next + 1);
         }
