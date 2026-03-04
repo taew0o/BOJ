@@ -1,13 +1,13 @@
 import java.util.*;
 class Solution {
-    public String orderToSpell(long n) {
-        StringBuilder sb = new StringBuilder();
-        while (n > 0) {
-            n--; // 0-indexed로 맞추기 위해 1 감소
-            sb.append((char) ('a' + (n % 26)));
-            n /= 26;
+    public static String orderToSpell(long order){
+        String result = "";
+        while(order != 0){
+            order --;
+            result = (char)((order % 26) + 'a') + result;
+            order /= 26;
         }
-        return sb.reverse().toString();
+        return result;
     }
     public static long spellToOrder(String spell){
         long result = 0;
@@ -28,6 +28,7 @@ class Solution {
                 count++;
             }
         }
+        System.out.println(count);
         for(long i = 0 ; i < count ; i++){
             n++;
             while(bannedSpells.contains(n)){
